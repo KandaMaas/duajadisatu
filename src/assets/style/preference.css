@@ -1,0 +1,575 @@
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
+
+.preference-container {
+  position: relative;
+
+  width: 100%;
+  min-height: 100vh;
+
+  padding: 31px 10px 65px;
+
+  background: #0d0d0d;
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   TOP PROGRESS LINE
+===================================================== */
+
+.preference-container::before {
+  content: "";
+
+  position: absolute;
+
+  top: 13px;
+  left: 10px;
+
+  width: 77px;
+  height: 2px;
+
+  background: #c13d88;
+
+  border-radius: 2px;
+}
+
+
+/* =====================================================
+   TOP PAGE NUMBER
+===================================================== */
+
+.preference-container::after {
+  content: "1/2";
+
+  position: absolute;
+
+  top: 12px;
+  right: 10px;
+
+  color: #aaaaaa;
+
+  font-size: 6px;
+  line-height: 1;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header-preference {
+  margin: 0 0 27px;
+}
+
+
+.header-preference h1 {
+  margin: 0 0 4px;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  line-height: 1.2;
+
+  font-weight: 500;
+}
+
+
+.preference-font-sub-header {
+  margin: 0;
+
+  color: #8d8d8d;
+
+  font-size: 7px;
+  line-height: 1.3;
+
+  font-weight: 400;
+}
+
+
+/* =====================================================
+   RANGE SECTION
+===================================================== */
+
+.range-section {
+  width: 100%;
+
+  margin: 0 0 21px;
+}
+
+
+.preference-label {
+  display: block;
+
+  margin: 0 0 9px;
+
+  color: #ffffff;
+
+  font-size: 8px;
+  line-height: 1.2;
+
+  font-weight: 500;
+}
+
+
+/* =====================================================
+   RANGE BOX
+===================================================== */
+
+.range-box {
+  position: relative;
+
+  width: 100%;
+  height: 45px;
+
+  background: #111111;
+
+  border: 1px solid #777777;
+  border-radius: 8px;
+}
+
+
+/* =====================================================
+   RANGE TRACK
+===================================================== */
+
+.range-track {
+  position: absolute;
+
+  left: 11px;
+  right: 11px;
+
+  top: 24px;
+
+  height: 2px;
+
+  background: #888888;
+
+  border-radius: 10px;
+}
+
+
+/* =====================================================
+   ACTIVE RANGE
+===================================================== */
+
+.range-active {
+  position: absolute;
+
+  top: 0;
+
+  height: 2px;
+
+  background: #c13d88;
+
+  border-radius: 10px;
+
+  z-index: 1;
+
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   RANGE INPUT
+===================================================== */
+
+.range-track input {
+  position: absolute;
+
+  top: -7px;
+  left: 0;
+
+  width: 100%;
+  height: 16px;
+
+  margin: 0;
+  padding: 0;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  border: 0;
+
+  background: transparent;
+
+  outline: none;
+
+  pointer-events: none;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   LAYER MIN
+===================================================== */
+
+.range-track input:nth-of-type(1) {
+  z-index: 4;
+}
+
+
+/* =====================================================
+   LAYER MAX
+===================================================== */
+
+.range-track input:nth-of-type(2) {
+  z-index: 5;
+}
+
+
+/* =====================================================
+   INPUT FOCUS
+===================================================== */
+
+.range-track input:focus {
+  outline: none;
+}
+
+
+/* =====================================================
+   WEBKIT TRACK
+===================================================== */
+
+.range-track input::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 2px;
+
+  background: transparent;
+
+  border: 0;
+}
+
+
+/* =====================================================
+   WEBKIT THUMB
+===================================================== */
+
+.range-track input::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 8px;
+  height: 8px;
+
+  margin-top: -3px;
+
+  border: 1px solid #ffffff;
+
+  border-radius: 50%;
+
+  background: #eeeeee;
+
+  cursor: pointer;
+
+  pointer-events: auto;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   FIREFOX TRACK
+===================================================== */
+
+.range-track input::-moz-range-track {
+  width: 100%;
+  height: 2px;
+
+  background: transparent;
+
+  border: 0;
+}
+
+
+/* =====================================================
+   FIREFOX THUMB
+===================================================== */
+
+.range-track input::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+
+  border: 1px solid #ffffff;
+
+  border-radius: 50%;
+
+  background: #eeeeee;
+
+  cursor: pointer;
+
+  pointer-events: auto;
+
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   VALUE CIRCLE
+===================================================== */
+
+.range-value {
+  position: absolute;
+
+  top: -8px;
+
+  width: 18px;
+  height: 18px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #c13d88;
+
+  color: #ffffff;
+
+  font-size: 6px;
+  line-height: 1;
+
+  font-weight: 500;
+
+  transform: translateX(-50%);
+
+  z-index: 8;
+
+  pointer-events: none;
+}
+
+
+.range-value.min {
+  z-index: 8;
+}
+
+
+.range-value.max {
+  z-index: 9;
+}
+
+
+/* =====================================================
+   RANGE LABELS
+===================================================== */
+
+.range-labels {
+  position: absolute;
+
+  left: 11px;
+  right: 11px;
+
+  bottom: 5px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.value-preference {
+  color: #c5c5c5;
+
+  font-size: 6px;
+  line-height: 1;
+
+  font-weight: 400;
+}
+
+
+/* =====================================================
+   BOTTOM BUTTON CONTAINER
+===================================================== */
+
+.bottom-btn-container {
+  position: fixed;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 0 17px 29px;
+
+  background: #0d0d0d;
+
+  z-index: 20;
+}
+
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.preference-btn {
+  width: 100%;
+  max-width: 155px;
+
+  height: 25px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 4px;
+
+  background: #c13d88;
+
+  color: #ffffff;
+
+  font-size: 0.75rem;
+  line-height: 1;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.preference-btn:hover {
+  background: #c13d88;
+}
+
+
+.preference-btn:active {
+  transform: scale(0.99);
+}
+
+
+/* =====================================================
+   MOBILE 360px+
+===================================================== */
+
+@media (min-width: 360px) {
+
+  .preference-container {
+    padding-left: 17px;
+    padding-right: 17px;
+  }
+
+
+  .preference-container::before {
+    left: 17px;
+    width: 77px;
+  }
+
+
+  .preference-container::after {
+    right: 17px;
+  }
+
+
+  .header-preference h1 {
+    font-size: 15px;
+  }
+
+
+  .preference-font-sub-header {
+    font-size: 8px;
+  }
+
+
+  .preference-label {
+    font-size: 9px;
+  }
+
+
+  .range-box {
+    height: 46px;
+  }
+
+
+  .range-track {
+    left: 12px;
+    right: 12px;
+  }
+
+
+  .range-labels {
+    left: 12px;
+    right: 12px;
+  }
+
+
+  .value-preference {
+    font-size: 7px;
+  }
+}
+
+
+/* =====================================================
+   MOBILE 430px+
+===================================================== */
+
+@media (min-width: 430px) {
+
+  .preference-container {
+    width: 100%;
+    max-width: 430px;
+
+    margin: 0 auto;
+
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+
+  .preference-container::before {
+    left: 20px;
+  }
+
+
+  .preference-container::after {
+    right: 20px;
+  }
+}
+
+
+.radio-options {
+    display: flex;
+    gap: 11px;
+    width: 100%;
+}
+
+/* Radio Option */
+
+.radio-option {
+    flex: 1;
+    height: 31px;
+
+    border: 1px solid #888;
+    border-radius: 6px;
+
+    background: #808080B2;
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 11px;
+    cursor: pointer;
+}
+
+/* Maksimal 2 opsi per baris */
+
+
+.calc {
+    flex: 0 0 calc(50% - 0.25rem);
+}
