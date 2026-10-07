@@ -18,17 +18,19 @@ font-family: inter;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1em;
+  gap: 2.5em;
 }
 .header-landing{
   color: #fff;
   font-size: 16px;
   text-align: center;
+  /* justify-self: end; */
+  /* align-self: flex-end; */
 }
 .landing-body-container{
 display: flex;
 flex-direction: column;
-justify-content: center;
+justify-content:space-around;
 text-align: left;
 height: 100vh;
 width: 70%;
@@ -41,19 +43,25 @@ max-width: 500px;
   font-weight: 100;
 }
 
-.bottom-btn-container{
+.landing-btn-container{
     text-align: center;
+    /* color: red; */
+    padding: 0.5em;
+    border-radius: 12px;
     width: 70%;
     cursor: pointer;
+    background-color: #BB4284;
+    margin: 0 auto;
+
 }
-.bottom-button{
+.landing-button{
     width: 100%;
     cursor: pointer;
     background-color: inherit;
     border: none;
     color: white;
     display: flex;
-    justify-content: center;
+    justify-content: center ;
     align-items: center;
 
 }

@@ -35,7 +35,7 @@ const MatchEngine = {
     WEIGHTS: {
       age: 15,
       height: 10,
-      hobby: 10,
+      hobby: 10, // Match preferensi hobi vs kuesioner hobi
       socialEnergy: 10,
       productive: 5,
       communication: 15,
@@ -43,7 +43,7 @@ const MatchEngine = {
       foods: 5,
       weekend: 5,
       loveLanguage: 10,
-      entertainment: 5
+      hobbyQuestionnaire: 5 // Match relasi kuesioner hobi antar user
     },
 
     // Nilai kecocokan jawaban
@@ -251,33 +251,75 @@ const MatchEngine = {
     },
 
 
-    entertainment: {
-      "Drama & Romance": {
-        "Drama & Romance": "exact",
-        Comedy: "different",
-        "Horror & Thriller": "different",
-        "Music & Concerts": "close"
+    hobby: {
+      travelling: {
+        travelling: "exact",
+        Olahraga: "close",
+        Memasak: "different",
+        "Baca buku": "different",
+        "Main musik": "different",
+        "Nonton film": "close",
+        "Beauty & fashion": "close"
       },
 
-      Comedy: {
-        "Drama & Romance": "different",
-        Comedy: "exact",
-        "Horror & Thriller": "different",
-        "Music & Concerts": "close"
+      Olahraga: {
+        travelling: "close",
+        Olahraga: "exact",
+        Memasak: "different",
+        "Baca buku": "different",
+        "Main musik": "different",
+        "Nonton film": "different",
+        "Beauty & fashion": "close"
       },
 
-      "Horror & Thriller": {
-        "Drama & Romance": "different",
-        Comedy: "different",
-        "Horror & Thriller": "exact",
-        "Music & Concerts": "different"
+      Memasak: {
+        travelling: "different",
+        Olahraga: "different",
+        Memasak: "exact",
+        "Baca buku": "close",
+        "Main musik": "different",
+        "Nonton film": "close",
+        "Beauty & fashion": "close"
       },
 
-      "Music & Concerts": {
-        "Drama & Romance": "close",
-        Comedy: "close",
-        "Horror & Thriller": "different",
-        "Music & Concerts": "exact"
+      "Baca buku": {
+        travelling: "different",
+        Olahraga: "different",
+        Memasak: "close",
+        "Baca buku": "exact",
+        "Main musik": "close",
+        "Nonton film": "close",
+        "Beauty & fashion": "different"
+      },
+
+      "Main musik": {
+        travelling: "different",
+        Olahraga: "different",
+        Memasak: "different",
+        "Baca buku": "close",
+        "Main musik": "exact",
+        "Nonton film": "close",
+        "Beauty & fashion": "different"
+      },
+
+      "Nonton film": {
+        travelling: "close",
+        Olahraga: "different",
+        Memasak: "close",
+        "Baca buku": "close",
+        "Main musik": "close",
+        "Nonton film": "exact",
+        "Beauty & fashion": "close"
+      },
+
+      "Beauty & fashion": {
+        travelling: "close",
+        Olahraga: "close",
+        Memasak: "close",
+        "Baca buku": "different",
+        "Main musik": "different",
+        "Nonton film": "close",
+        "Beauty & fashion": "exact"
       }
     }
 
@@ -287,6 +329,13 @@ const MatchEngine = {
   /* ---------------------------------------------------
      HELPER METHODS
   --------------------------------------------------- */
+
+  // Helper untuk mengonversi data menjadi array jika berbentuk string
+  toArray(val) {
+    if (!val) return [];
+    return Array.isArray(val) ? val : [val];
+  },
+
 
   getMatchValue(level) {
 
@@ -308,11 +357,17 @@ const MatchEngine = {
 
   calculateHobbyScore(preferenceA, userB) {
 
-    if (!preferenceA?.hobby || !userB?.questionnaire?.hobby) {
+    const arrA = this.toArray(preferenceA?.hobby);
+    const arrB = this.toArray(userB?.questionnaire?.hobby);
+
+    if (arrA.length === 0 || arrB.length === 0) {
       return 0;
     }
 
-    if (preferenceA.hobby === userB.questionnaire.hobby) {
+    // Cek apakah ada minimal 1 hobi yang sama
+    const hasOverlap = arrA.some((item) => arrB.includes(item));
+
+    if (hasOverlap) {
       return 100;
     }
 
@@ -323,21 +378,36 @@ const MatchEngine = {
 
   calculateQuestionnaireScore(field, valueA, valueB) {
 
-    if (!valueA || !valueB) {
+    const arrA = this.toArray(valueA);
+    const arrB = this.toArray(valueB);
+
+    if (arrA.length === 0 || arrB.length === 0) {
       return 0;
     }
 
-    if (valueA === valueB) {
-      return this.CONFIG.MATCH_LEVEL.exact;
+    let maxScore = 0;
+
+    // Evaluasi semua kombinasi item (baik array maupun bukan) dan ambil skor tertinggi
+    for (const itemA of arrA) {
+      for (const itemB of arrB) {
+        let currentScore = 0;
+
+        if (itemA === itemB) {
+          currentScore = this.CONFIG.MATCH_LEVEL.exact;
+        } else {
+          const relation = this.MATCH_RELATION[field]?.[itemA]?.[itemB];
+          currentScore = relation
+            ? this.getMatchValue(relation)
+            : this.CONFIG.MATCH_LEVEL.different;
+        }
+
+        if (currentScore > maxScore) {
+          maxScore = currentScore;
+        }
+      }
     }
 
-    const relation = this.MATCH_RELATION[field]?.[valueA]?.[valueB];
-
-    if (!relation) {
-      return this.CONFIG.MATCH_LEVEL.different;
-    }
-
-    return this.getMatchValue(relation);
+    return maxScore;
 
   },
 
@@ -356,113 +426,48 @@ const MatchEngine = {
     const questionnaireA = userA.questionnaire || {};
     const questionnaireB = userB.questionnaire || {};
 
+    // Helper untuk mencari kesamaan nilai antar elemen
+    const findSharedItems = (valA, valB) => {
+      const arrA = this.toArray(valA);
+      const arrB = this.toArray(valB);
+      return arrA.filter((item) => arrB.includes(item));
+    };
+
 
     /*
-     * HOBBY
+     * HOBBY PREFERENCE
      */
-
-    if (
-      preferenceA.hobby &&
-      questionnaireB.hobby &&
-      preferenceA.hobby === questionnaireB.hobby
-    ) {
-      reasons.push(preferenceA.hobby);
+    const sharedHobbies = findSharedItems(
+      preferenceA.hobby,
+      questionnaireB.hobby
+    );
+    if (sharedHobbies.length > 0) {
+      reasons.push(sharedHobbies[0]);
     }
 
 
     /*
-     * SOCIAL ENERGY
+     * QUESTIONNAIRE FIELDS
      */
+    const fields = [
+      "socialEnergy",
+      "productive",
+      "communication",
+      "freeTime",
+      "foods",
+      "weekend",
+      "loveLanguage",
+      "hobby"
+    ];
 
-    if (
-      questionnaireA.socialEnergy &&
-      questionnaireA.socialEnergy === questionnaireB.socialEnergy
-    ) {
-      reasons.push(questionnaireA.socialEnergy);
-    }
-
-
-    /*
-     * PRODUCTIVE
-     */
-
-    if (
-      questionnaireA.productive &&
-      questionnaireA.productive === questionnaireB.productive
-    ) {
-      reasons.push(questionnaireA.productive);
-    }
-
-
-    /*
-     * COMMUNICATION
-     */
-
-    if (
-      questionnaireA.communication &&
-      questionnaireA.communication === questionnaireB.communication
-    ) {
-      reasons.push(questionnaireA.communication);
-    }
-
-
-    /*
-     * FREE TIME
-     */
-
-    if (
-      questionnaireA.freeTime &&
-      questionnaireA.freeTime === questionnaireB.freeTime
-    ) {
-      reasons.push(questionnaireA.freeTime);
-    }
-
-
-    /*
-     * FOODS
-     */
-
-    if (
-      questionnaireA.foods &&
-      questionnaireA.foods === questionnaireB.foods
-    ) {
-      reasons.push(questionnaireA.foods);
-    }
-
-
-    /*
-     * WEEKEND
-     */
-
-    if (
-      questionnaireA.weekend &&
-      questionnaireA.weekend === questionnaireB.weekend
-    ) {
-      reasons.push(questionnaireA.weekend);
-    }
-
-
-    /*
-     * LOVE LANGUAGE
-     */
-
-    if (
-      questionnaireA.loveLanguage &&
-      questionnaireA.loveLanguage === questionnaireB.loveLanguage
-    ) {
-      reasons.push(questionnaireA.loveLanguage);
-    }
-
-
-    /*
-     * ENTERTAINMENT
-     */
-
-    if (
-      questionnaireA.entertainment &&
-      questionnaireA.entertainment === questionnaireB.entertainment
-    ) {
-      reasons.push(questionnaireA.entertainment);
+    for (const field of fields) {
+      const matches = findSharedItems(
+        questionnaireA[field],
+        questionnaireB[field]
+      );
+      if (matches.length > 0) {
+        reasons.push(matches[0]);
+      }
     }
 
 
@@ -470,7 +475,7 @@ const MatchEngine = {
      * Maksimal 2 alasan.
      */
 
-    return reasons.slice(0, 2);
+    return reasons.slice(0, 4);
 
   },
 
@@ -500,7 +505,7 @@ const MatchEngine = {
 
 
     /* HEIGHT */
-
+      
     const heightScore = this.calculateRangeScore(
       Number(userB.tinggi),
       Number(preference.minTinggi),
@@ -510,7 +515,7 @@ const MatchEngine = {
     score += (heightScore * this.CONFIG.WEIGHTS.height) / 100;
 
 
-    /* HOBBY */
+    /* HOBBY PREFERENCE */
 
     const hobbyScore = this.calculateHobbyScore(
       preference,
@@ -618,17 +623,17 @@ const MatchEngine = {
     ) / 100;
 
 
-    /* ENTERTAINMENT */
+    /* HOBBY QUESTIONNAIRE */
 
-    const entertainmentScore = this.calculateQuestionnaireScore(
-      "entertainment",
-      questionnaireA.entertainment,
-      questionnaireB.entertainment
+    const hobbyQuestionnaireScore = this.calculateQuestionnaireScore(
+      "hobby",
+      questionnaireA.hobby,
+      questionnaireB.hobby
     );
 
     score += (
-      entertainmentScore *
-      this.CONFIG.WEIGHTS.entertainment
+      hobbyQuestionnaireScore *
+      this.CONFIG.WEIGHTS.hobbyQuestionnaire
     ) / 100;
 
 
@@ -1034,6 +1039,7 @@ const MatchEngine = {
           umur: pair.userB.umur,
           score: pair.scoreAB,
           tinggi: pair.userB.tinggi,
+          ig: pair.userB.ig || pair.userB.instagram,
           reciprocalScore:
             pair.reciprocalScore,
 
@@ -1047,10 +1053,10 @@ const MatchEngine = {
           uid: uidA,
 
           nama: pair.userA.nama,
-          nama: pair.userA.nama,
           umur: pair.userA.umur,
           score: pair.scoreBA,
-
+          tinggi: pair.userA.tinggi,
+          ig: pair.userA.ig || pair.userA.instagram,
           reciprocalScore:
             pair.reciprocalScore,
 

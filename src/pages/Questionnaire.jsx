@@ -11,10 +11,10 @@ function Questionnaire({ setData, dataUser, hasDone }) {
     productive: "Morning",
     communication: "Fast responder",
     freeTime: "Me time",
-    foods: "Asian food",
-    weekend: "Chill at home",
-    loveLanguage: "Words of affirmation",
-    entertainment: "Drama & Romance"
+    foods: ["Asian food"],             
+    weekend: ["Chill at home"],        
+    loveLanguage: ["Words of affirmation"], 
+    hobbies: ["Travelling"] 
   })
 
   const [pageQuest, setPageQuest] = useState(1)

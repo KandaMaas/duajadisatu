@@ -1,13 +1,11 @@
-/* Radio Container */
-
+/* Radio Container (Tetap menggunakan nama class asli) */
 .radio-options {
     display: flex;
     gap: 11px;
     width: 100%;
 }
 
-/* Radio Option */
-
+/* Radio/Checkbox Option */
 .radio-option {
     flex: 1;
     height: 31px;
@@ -30,19 +28,20 @@
 .calc {
     flex: 0 0 calc(50% - 0.25rem);
 }
-/* Hilangkan radio bawaan */
 
-.radio-option input[type="radio"] {
+/* Hilangkan checkbox bawaan */
+.radio-option input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
     display: none;
 }
-.question{
+
+.question {
     margin-bottom: 1em;
 }
-/* Option yang dipilih */
 
-.radio-option:has(input[type="radio"]:checked) {
+/* Option yang dipilih (Ubah selector ke checkbox) */
+.radio-option:has(input[type="checkbox"]:checked) {
     background: #a83272;
     border-color: #c93d88;
 }
@@ -54,6 +53,7 @@
     margin: 0 auto;
     text-align: left;
 }
+
 .label-container {
     display: flex;
     flex-wrap: wrap;
@@ -90,14 +90,16 @@
     cursor: pointer;
     border-radius: 20px;
 }
+
 .next-pages{
     margin-top: 2rem;
 }
+
 .bottom-button{
     width: 100%;
     height: 1.5rem;
     cursor: pointer;
     background-color: inherit;
     border: none;
-    color: white
+    color: white;
 }

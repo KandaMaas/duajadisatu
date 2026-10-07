@@ -70,12 +70,12 @@ export default function QuizSection1({handle, formData}){
             <div className="label-container">
     
               <label className="radio-option">
-                Morning
+                Morning Person
     
                 <input
                   type="radio"
                   name="productive"
-                  value="Morning"
+                  value="Morning Person"
                   onChange={handle}
                   checked={formData.productive === "Morning"}
                 />

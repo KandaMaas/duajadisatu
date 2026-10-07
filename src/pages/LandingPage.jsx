@@ -1,5 +1,4 @@
 import logo from "../assets/images/logo.png"
-import "../app.css"
 import "../assets/style/landing.css"
 export default function LandingPage({click}){
     return (<>
@@ -10,8 +9,8 @@ export default function LandingPage({click}){
                     <h1 className="header-landing">Make a new connection naturally</h1>
                 </div>
                 
-                <div className="bottom-btn-container" >      
-                            <button className="bottom-button" onClick={click}> Get Started</button>
+                <div className="landing-btn-container" >      
+                            <button className="landing-button" onClick={click}> Get Started</button>
                 </div>
             </div>
 

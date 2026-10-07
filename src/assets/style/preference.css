@@ -541,35 +541,76 @@
 }
 
 
-.radio-options {
-    display: flex;
-    gap: 11px;
-    width: 100%;
+/* =====================================================
+   SECTIONS & QUESTION LAYOUT
+===================================================== */
+
+.section-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  text-align: left;
 }
 
-/* Radio Option */
+.question {
+  margin-bottom: 0.8em;
+  font-size: 13px;
+  color: #ffffff;
+}
 
+.label-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* =====================================================
+   RADIO / CHECKBOX OPTIONS
+===================================================== */
+
+.radio-options {
+  display: flex;
+  gap: 11px;
+  width: 100%;
+}
+
+/* Option Box */
 .radio-option {
-    flex: 1;
-    height: 31px;
+  flex: 1;
+  height: 31px;
 
-    border: 1px solid #888;
-    border-radius: 6px;
+  border: 1px solid #888;
+  border-radius: 6px;
 
-    background: #808080B2;
-    color: white;
+  background: #808080B2;
+  color: white;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    font-size: 11px;
-    cursor: pointer;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
 /* Maksimal 2 opsi per baris */
-
-
 .calc {
-    flex: 0 0 calc(50% - 0.25rem);
+  flex: 0 0 calc(50% - 0.25rem);
+}
+
+/* Hilangkan input bawaan (Checkbox & Radio) */
+.radio-option input[type="checkbox"],
+.radio-option input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  display: none;
+}
+
+/* Efek tombol ketika opsi dipilih (Checked) */
+.radio-option:has(input[type="checkbox"]:checked),
+.radio-option:has(input[type="radio"]:checked) {
+  background: #a83272;
+  border-color: #c13d88;
 }

@@ -15,8 +15,8 @@ export default function PreferenceUser({
     maxUmur: 30,
     minTinggi: 140,
     maxTinggi: 180,
-    hobby: "Travelling",
-    loveLanguage: "Words of affirmation"
+    hobby: ["Travelling"],
+    loveLanguage: ["Words of affirmation"]
   })
 
   const [pagePreference, setPagePreference] = useState(1)

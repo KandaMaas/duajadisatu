@@ -222,7 +222,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .next-button {
     width: calc(100% - 24px);
     height: 40px;
-
+    bottom: 1rem;
     margin: 100px 12px 0;
 
     border: none;
@@ -230,10 +230,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
     background: #bd3f82;
     color: white;
-
+    
     font-size: 12px;
     font-weight: 600;
-
+    position: sticky;
     cursor: pointer;
 }
 
